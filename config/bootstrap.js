@@ -9,7 +9,12 @@
  * https://sailsjs.com/config/bootstrap
  */
 
+const EmployeDAO = require('../api/dao/EmployeDAO');
+
 module.exports.bootstrap = async function() {
+  
+
+  global.EmployeDAO = EmployeDAO;
 
   // Import dependencies
   var path = require('path');

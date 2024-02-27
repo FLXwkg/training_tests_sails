@@ -32,6 +32,10 @@ module.exports = {
    */
   calculerSalaireBaseEmploye(employe){
 
+    if (!GRILLE_SALARIALE[employe.fonction][employe.position]){
+      employe.position = Math.max(...(Object.keys(GRILLE_SALARIALE[employe.fonction]).map(Number)));
+    }
+
     // Salaire en fonction du poste et de la position de l'employe
     let salaire = GRILLE_SALARIALE[employe.fonction][employe.position];
     // Bonus de 15 % à partir de 10 ans d'experience
@@ -59,8 +63,14 @@ module.exports = {
   calculerSalairePeriodeEmploye(employe , periode , totalHeures){
     let salaire = employe.salaireBase;
 
+    let anciennete = nombreAnneesCompletes(employe.dateEmbauche , new Date(periode.annee , periode.mois , 1));
+    
     // Ecrivez votre code ici
-
+    salaire = salaire + (15 * anciennete); //45
+    if (employe.fonction== 'TECHNICIEN' ){
+      let heuresSup = Math.min(Math.max(totalHeures - 140 , 0) , 50)
+      salaire = salaire + (heuresSup * 12) ;
+    }
     return salaire;
   },
 
@@ -76,6 +86,22 @@ module.exports = {
     return salairesHorsNormes;
   },
 
+  /**
+   * 
+   * @param {*} employes Liste des employés 
+   * @returns Moyennes par fonction
+   */
+  calculerMoyenneSalaires : (employes)=> {
 
-
+  }
 }
+
+function nombreAnneesCompletes(d1, d2) {
+  var months;
+  months = (d2.getFullYear() - d1.getFullYear()) * 12;
+  months -= d1.getMonth();
+  months += d2.getMonth();
+  return months <= 0 ? 0 : Math.floor(months / 12);
+}
+
+

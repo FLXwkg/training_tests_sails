@@ -45,6 +45,16 @@ module.exports = {
     salaireBase: {
       type: 'number',
       min : 0,
+    },
+    equipe: {
+      type: 'string'
+    },
+    statut: {
+      type: 'string',
+      isIn : ['EN_ATTENTE' , 'EN_ACTIVITE' , 'LICENCIE' , 'DEMISSIONE']
+    },
+    numSecu : {
+      type : 'string'
     }
   },
 
