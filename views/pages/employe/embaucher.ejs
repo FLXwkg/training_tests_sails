@@ -1,0 +1,60 @@
+<div class="container-fluid">
+    <form action="/employe/embaucher" method="POST" >
+        <input type="hidden" name="_csrf" value="<%- _csrf %>" />
+        <div class="p-3">
+            <button class="btn btn-info" type="submit">Valider</button>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Nom</label>
+                    <input class="form-control" name="nom"  />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Prenom</label>
+                    <input class="form-control" name="prenom"  />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Fonction</label>
+                    <select class="form-control" name="fonction">
+                        <option>TECHNICIEN</option>
+                        <option>CADRE</option>
+                        <option>CADRE_SUPERIEUR</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Position</label>
+                    <select class="form-control" name="position">
+                        <option value="1">Rang 1</option>
+                        <option value="2">Rang 2</option>
+                        <option value="3">Rang 3</option>
+                        <option value="4">Rang 4</option>
+                        <option value="5">Rang 5</option>
+                        <option value="6">Rang 6</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Experience (années)</label>
+                    <input class="form-control" name="experience" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="form-label">Date d'embauche</label>
+                    <input class="form-control" name="dateEmbauche" placeholder="2023-08-18"  />
+                </div>
+            </div>
+
+
+        </div>
+
+    </form>
+</div>

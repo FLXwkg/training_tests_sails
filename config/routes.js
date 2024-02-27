@@ -10,4 +10,9 @@
 
 module.exports.routes = {
 
+  'GET /employe/liste' : 'EmployeController.liste',
+  'GET /employe/embaucher' : { view: 'pages/employe/embaucher' },
+  'POST /employe/embaucher' : 'EmployeController.embaucher',
+  'GET /employe/:id/supprimer' : 'EmployeController.supprimer',
+
 };

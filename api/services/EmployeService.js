@@ -25,24 +25,4 @@ module.exports = {
         // Do stuff ...
     }
 
-
-
 }
-
-salaires = [
-    {
-        mois : 0,
-        annee : 2023,
-        salaire : 1520,
-    },
-    {
-        mois : 1,
-        annee : 2023,
-        salaire : 1520,
-    },
-    {
-        mois : 2,
-        annee : 2023,
-        salaire : 1620,
-    }
-]

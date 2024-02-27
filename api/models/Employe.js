@@ -38,9 +38,7 @@ module.exports = {
     },
     experience: {
       type: 'number',
-      required: true,
-      min : 1,
-      max : 6
+      required: true
     },
     salaireBase: {
       type: 'number',
