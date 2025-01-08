@@ -9,19 +9,7 @@
  * https://sailsjs.com/config/bootstrap
  */
 
-const EmployeDAO = require('../api/dao/EmployeDAO');
-const data = require('../data.json');
 module.exports.bootstrap = async function() {
-
-
-  global.EmployeDAO = EmployeDAO;
-
-  for (let d of data){
-    let existing = await Employe.find({numSecu : d.numSecu});
-    if (existing.length === 0){
-      await Employe.create(d);
-    }
-  }
 
 
   // Import dependencies
