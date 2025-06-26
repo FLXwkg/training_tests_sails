@@ -31,9 +31,16 @@ module.exports = {
    * @returns {number}
    */
   calculerSalaireBaseEmploye(employe){
+    const grille = GRILLE_SALARIALE[employe.fonction];
+    if (!grille) throw new Error(`La fonction n'existe pas : ${employe.fonction}`);
 
+    const positions = Object.keys(grille).map(Number)
+    const maxPOS = Math.max(...positions);
+    if(employe.position > maxPOS){
+        employe.position = maxPOS
+    }
     // Salaire en fonction du poste et de la position de l'employe
-    let salaire = GRILLE_SALARIALE[employe.fonction][employe.position];
+    let salaire = grille[employe.position];
     // Bonus de 15 % à partir de 10 ans d'experience
     if (employe.experience >= 10){
       salaire*=1.15;
@@ -57,25 +64,91 @@ module.exports = {
    * @returns {number}
    */
   calculerSalairePeriodeEmploye(employe , periode , totalHeures){
-    let salaire = employe.salaireBase;
+    const nbYear = getNumberYears(employe.dateEmbauche, periode)
 
-    // Ecrivez votre code ici
+    let salairePeriode = employe.salaireBase + (nbYear * 15);
+    let heuresSup = 0
 
-    return salaire;
+    if(employe.fonction === 'TECHNICIEN'){
+      if(totalHeures > 140){
+        heuresSup = totalHeures - 140;
+        if(heuresSup > 50){
+          heuresSup = 50;
+        }
+        if (heuresSup < 0){
+          heuresSup = 0
+        }
+      }
+    }
+    salairePeriode += (heuresSup * 12)
+
+    return salairePeriode;
   },
 
   /**
    * Salaires hors normes
    * @param employes
-   * @returns {*[]}
+   * @returns {Object[]} employés dont le salaire est hors des ±20% de la grille
    */
-  trouverSalairesHorsNormes(employes){
-    let salairesHorsNormes = [];
-    // Ecrivez votre code ici
+  trouverSalairesHorsNormes(employes) {
+    return employes.filter(employe => {
+      const grille = GRILLE_SALARIALE[employe.fonction];
+      if (!grille) return false;
 
-    return salairesHorsNormes;
+      const salaireGrille = grille[employe.position];
+      if (!salaireGrille) return false;
+
+      const salaireMin = salaireGrille * 0.8;
+      const salaireMax = salaireGrille * 1.2;
+
+      return employe.salaireBase < salaireMin || employe.salaireBase > salaireMax;
+    }).map(employe => ({
+      ...employe,
+      salaireGrille: GRILLE_SALARIALE[employe.fonction][employe.position]
+    }));
   },
 
+  /**
+   * @param {*} employes
+   * @returns
+   */
+  calculerMoyenneSalaires(employes) {
+    const salairesParFonction = {};
 
+    employes.forEach(e => {
+      if (!salairesParFonction[e.fonction]) {
+        salairesParFonction[e.fonction] = [];
+      }
+      salairesParFonction[e.fonction].push(e.salaireBase);
+    });
+    
+    const moyennes = {};
+    Object.entries(salairesParFonction).forEach(([fonction, salaires]) => {
+      const total = salaires.reduce((acc, s) => acc + s, 0);
+      moyennes[fonction] = total / salaires.length;
+    });
 
+    return moyennes;
+  }
 }
+
+function getNumberYears(dateEmbauche, periode) {
+  const periodeDate = new Date(periode.annee, periode.mois - 1, periode.jour || 1, 12, 0, 0);
+
+  if (periodeDate < dateEmbauche) {
+    throw new Error(`La période ${periodeDate.toISOString().slice(0, 10)} est antérieure à la date d'embauche ${dateEmbauche.toISOString().slice(0, 10)}`);
+  }
+
+  let nbYear = periodeDate.getFullYear() - dateEmbauche.getFullYear();
+
+  if (
+    periodeDate.getMonth() < dateEmbauche.getMonth() ||
+    (periodeDate.getMonth() === dateEmbauche.getMonth() &&
+      periodeDate.getDate() < dateEmbauche.getDate())
+  ) {
+    nbYear--;
+  }
+
+  return nbYear;
+}
+
