@@ -1,5 +1,4 @@
 var sails = require('sails');
-const Sinon = require('sinon');
 
 // Before running any tests...
 before(function(done) {
@@ -35,7 +34,3 @@ after(function(done) {
   sails.lower(done);
 
 });
-
-afterEach(function() {
-  Sinon.restore()
-})
